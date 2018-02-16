@@ -1,8 +1,11 @@
 # network 
-MCAST='224.1.1.1'
-PORT=8001
-IFACE='eth0'
+export MCAST='224.1.1.1'
+export PORT=8001
+export IFACE='eth0'
 
 # JACK 
-CARD='hw:CARD=Intel'
-PERIOD='64'
+export CARD='hw:CARD=Intel'
+export PERIOD='64'
+
+# ROLE
+export ROLE=client
