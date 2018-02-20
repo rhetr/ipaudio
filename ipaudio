@@ -1,9 +1,11 @@
 #!/bin/bash
 
-source vars.sh
+source /opt/ipaudio/vars.sh
 
 if [[ $ROLE = 'server' ]]; then
-/opt/ipaudio/ipaudio_server
+	echo starting server
+	exec /opt/ipaudio/ipaudio_server
 elif [[ $ROLE = 'client' ]]; then
-/opt/ipaudio/ipaudio_client
+	echo starting client
+	exec /opt/ipaudio/ipaudio_client
 fi

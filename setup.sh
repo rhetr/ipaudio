@@ -1,26 +1,32 @@
-# requirements:
-# jackd
-# zita-njbridge
+#!/bin/bash
+
+TARGET=/opt/ipaudio
+ROLE=server
+SRC=/home/perry/deploy/ipaudio
+USER=perry
 
 ## install required stuff
 apt install -y jackd zita-njbridge
 
-
 ## setup app dir in /opt/ipaudio
-mkdir /opt/ipaudio
+mkdir $TARGET
 
-# for client
-echo export ROLE=client >> vars.sh
-# for server
-echo export ROLE=server >> vars.sh
+# copy to $TARGET
+cp -u $SRC/ipaudio $TARGET/ipaudio
+cp -u $SRC/vars.sh $TARGET/vars.sh
+cp -u $SRC/ipaudio_client $TARGET/ipaudio_client
+cp -u $SRC/ipaudio_server $TARGET/ipaudio_server
 
-cp ipaudio /opt/ipaudio/ipaudio
-cp vars.sh /opt/vars.sh
-cp ipaudio_client /opt/ipaudio/ipaudio_client
-cp ipaudio_server /opt/ipaudio/ipaudio_server
+# setup role
+sed -i s/ROLE=.*$/ROLE=$ROLE/ $TARGET/vars.sh
 
-ln -s /opt/ipaudio/ipaudio* /usr/local/bin/
+# link to $PATH
+ln -s $TARGET/ipaudio* /usr/local/bin/
 
 ## copy crontab
-CRONTAB='/var/spool/cron/crontabs/perry'
-echo "@reboot /usr/local/bin/ipaudio" >> $CRONTAB
+CRONTAB="/var/spool/cron/crontabs/$USER"
+JOB="@reboot /usr/local/bin/ipaudio"
+
+if ! [[ $(crontab -l -u "$USER" | grep "$JOB" ) ]]; then
+	echo "$JOB" >> $CRONTAB
+fi
