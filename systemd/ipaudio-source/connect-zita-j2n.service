@@ -1,0 +1,16 @@
+[Unit]
+Description=connect-zita-j2n.service
+Requires=zita-j2n.service jackd.service
+After=zita-j2n.service jackd.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/bin/wait_zita
+ExecStart=/usr/bin/jack_connect system:capture_1 zita-j2n:in_1
+ExecStart=/usr/bin/jack_connect system:capture_2 zita-j2n:in_2
+ExecStop=/usr/bin/jack_disconnect system:capture_1 zita-j2n:in_1
+ExecStop=/usr/bin/jack_disconnect system:capture_2 zita-j2n:in_2
+
+# [Install]
+# RequiredBy=ipaudio.target

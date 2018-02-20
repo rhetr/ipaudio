@@ -1,0 +1,8 @@
+[Unit]
+Description=ipaudio-sink.target
+Requires=jackd.service zita-n2j.service connect-zita-n2j.service
+After=jackd.service zita-n2j.service connect-zita-n2j.service
+
+[Install]
+WantedBy=default.target
+Also=jackd.service zita-n2j.service connect-zita-n2j.service

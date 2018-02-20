@@ -1,0 +1,12 @@
+[Unit]
+Description=zita-n2j.service
+Requires=jackd.service
+After=jackd.service
+
+[Service]
+Type=simple
+ExecStartPre=/usr/bin/jack_wait -w
+ExecStart=/usr/bin/zita-n2j 224.1.1.1 8001 enp9s0
+
+# [Install]
+# RequiredBy=ipaudio-sink.target connect-zita-n2j.service

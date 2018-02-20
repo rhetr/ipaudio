@@ -1,32 +1,20 @@
 #!/bin/bash
 
-TARGET=/opt/ipaudio
-ROLE=server
-SRC=/home/perry/deploy/ipaudio
-USER=perry
+
+ROLE='source'
+USERNAME=perry
+
+SRC_DIR=/home/$USERNAME/deploy/ipaudio
+SYSTEMD_SRC_DIR=$SRC_DIR/systemd
+SYSTEMD_USER_DIR=/home/$USERNAME/.config/systemd/user
+SYSTEMD_SET_UNIT="ipaudio-$ROLE"
 
 ## install required stuff
 apt install -y jackd zita-njbridge
 
-## setup app dir in /opt/ipaudio
-mkdir $TARGET
+## copy stuff to SYSTEMD_USR_DIR
+cp -pr $SYSTEMD_SRC_DIR $SYSTEMD_USER_DIR
 
-# copy to $TARGET
-cp -u $SRC/ipaudio $TARGET/ipaudio
-cp -u $SRC/vars.sh $TARGET/vars.sh
-cp -u $SRC/ipaudio_client $TARGET/ipaudio_client
-cp -u $SRC/ipaudio_server $TARGET/ipaudio_server
-
-# setup role
-sed -i s/ROLE=.*$/ROLE=$ROLE/ $TARGET/vars.sh
-
-# link to $PATH
-ln -s $TARGET/ipaudio* /usr/local/bin/
-
-## copy crontab
-CRONTAB="/var/spool/cron/crontabs/$USER"
-JOB="@reboot /usr/local/bin/ipaudio"
-
-if ! [[ $(crontab -l -u "$USER" | grep "$JOB" ) ]]; then
-	echo "$JOB" >> $CRONTAB
-fi
+# set role
+systemctl --user enable $SYSTEMD_SET_UNIT
+loginctl enable-linger $USERNAME

@@ -1,0 +1,8 @@
+[Unit]
+Description=ipaudio-source.target
+Requires=jackd.service zita-j2n.service connect-zita-j2n.service
+After=jackd.service zita-j2n.service connect-zita-j2n.service
+
+[Install]
+WantedBy=default.target
+Also=jackd.service zita-j2n.service connect-zita-j2n.service

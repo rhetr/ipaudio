@@ -1,0 +1,6 @@
+[Unit]
+Description=jackd.service
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/jackd -R -d alsa -d hw:CARD=Intel -p 256
