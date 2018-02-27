@@ -1,6 +1,6 @@
 #!/bin/bash
 # waits for a jack port with "zita" in its name
 
-while ! [[ $(jack_lsp 2>/dev/null | grep zita) ]]; do sleep 1; done
+while ! [[ $(jack_lsp 2>/dev/null | grep zita-j2n) ]]; do sleep 1; done
 echo 'zita started'
 exit 0

@@ -20,7 +20,8 @@ cp -p $SYSTEMD_SRC_DIR/jackd.service $SYSTEMD_USER_DIR
 cp -p $SYSTEMD_SRC_DIR/ipaudio-sink/* $SYSTEMD_USER_DIR
 cp -p $SYSTEMD_SRC_DIR/ipaudio-source/* $SYSTEMD_USER_DIR
 
-cp $SRC_DIR/wait_zita /usr/local/bin/
+cp $SRC_DIR/wait_zita_sink /usr/local/bin/
+cp $SRC_DIR/wait_zita_source /usr/local/bin/
 
 # add pam_limits.so to /etc/pam.d/systemd-user
 echo "session  required pam_limits.so" >> /etc/pam.d/systemd-user
