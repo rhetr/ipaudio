@@ -1,12 +1,11 @@
 #!/bin/bash
 
-
+## set this to what you want
 ROLE='source'
-USERNAME=perry
 
-USER_HOME=/home/$USERNAME
-SRC_DIR=$USER_HOME/deploy/ipaudio
-SYSTEMD_SRC_DIR=$SRC_DIR/systemd
+## $USERNAME, $USER_HOME and $APP_ROOT should be set in env, e.g. by node/run
+
+SYSTEMD_SRC_DIR=$APP_ROOT/systemd
 SYSTEMD_USER_DIR=$USER_HOME/.config/systemd/user
 SYSTEMD_SET_UNIT="ipaudio-$ROLE"
 
@@ -20,16 +19,16 @@ cp -p $SYSTEMD_SRC_DIR/jackd.service $SYSTEMD_USER_DIR
 cp -p $SYSTEMD_SRC_DIR/ipaudio-sink/* $SYSTEMD_USER_DIR
 cp -p $SYSTEMD_SRC_DIR/ipaudio-source/* $SYSTEMD_USER_DIR
 
-cp $SRC_DIR/wait_zita_sink /usr/local/bin/
-cp $SRC_DIR/wait_zita_source /usr/local/bin/
+cp $APP_ROOT/wait_zita_sink /usr/local/bin/
+cp $APP_ROOT/wait_zita_source /usr/local/bin/
 
-# add pam_limits.so to /etc/pam.d/systemd-user
+## add pam_limits.so to /etc/pam.d/systemd-user
 echo "session  required pam_limits.so" >> /etc/pam.d/systemd-user
 
-# set role
+## set role
 su -c "systemctl --user daemon-reload" $USERNAME
 su -c "systemctl --user enable $SYSTEMD_SET_UNIT" $USERNAME
 loginctl enable-linger $USERNAME
 
-# pull up alsamixer for tty1, should be automatic
+## pull up alsamixer for tty1
 echo '[[ $(tty) = "/dev/tty1" ]] && exec alsamixer' >> $USER_HOME/.bashrc
